@@ -3,6 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import Header from './component/Header/Header';
 import TodoBody from './component/TodoBody/TodoBody';
+import { UserProvider } from './UserContext';
 
 const initialTodo = [
   {
@@ -31,12 +32,28 @@ const initialTodo = [
   },
 ]
 
+
+
 function App() {
-  return (
-    <React.Fragment>
+  // if we had login part this would look something like this
+  const User = {
+    logedIn : false,
+    userName : 'Deepesh'
+  }
+
+  //Body which will always
+  const AppBody = (
+    <>
       <Header />
       <TodoBody initialTodo={initialTodo}/>
-    </React.Fragment>
+    </>
+  )
+  return (
+    <>
+        {
+          User.logedIn ? <UserProvider value={User.userName}>{AppBody}</UserProvider> : AppBody
+        }
+    </>
   );
 }
 
