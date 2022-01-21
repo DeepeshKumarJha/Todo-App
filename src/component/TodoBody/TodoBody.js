@@ -1,17 +1,8 @@
 import React from "react";
 import TodoElement from "./TodoElement";
 import TodoAdd from "./TodoAdd";
+import { Container } from "@mui/material";
 
-/*
-    // how it will look : 
-
-    <form><input>Todo</input></form>
-    <ul>
-        <li> todo-1 </li>
-        <li> todo-2 </li>
-        <li> todo-3 </li>
-    </ul>
-*/
 
 export default class TodoBody extends React.Component{
 
@@ -19,38 +10,99 @@ export default class TodoBody extends React.Component{
         super(props);
 
         this.addNewTodo = this.addNewTodo.bind(this);
-        this.state = {todoList : this.props.initialTodo};
+        this.moveTodoWhenDone = this.moveTodoWhenDone.bind(this);
+        this.handleCheckbox = this.handleCheckbox.bind(this);
+        // this.state = {
+        //     todoList : this.props.initialTodo,
+        //     todoActive: this.props.initialTodo.filter(
+        //         val => {
+        //             return val.active;
+        //         }
+        //     ),
+        //     todoDone: this.props.initialTodo.filter(
+        //         val => {
+        //             return !val.active;
+        //         }
+        //     )
+        // };
+        
+        // create a single state 
+        this.state = {
+            todoList : this.props.initialTodo
+        }
+
+        this.todoActive = this.state.todoList.filter(
+            val => {
+                return val.active;
+            }
+        )
+
+        this.todoDone = this.state.todoList.filter(
+            val => {
+                return !val.active;
+            }
+        )
+    }
+
+    moveTodoWhenDone(todoValue){
+        // This function will move item from todoActive list to todoDone list
+        
+    }
+    
+    handleCheckbox(checkboxObject){
+        // this will call the moveTodoWhenDone according to it's state
+        console.log(checkboxObject)
     }
 
     addNewTodo(newTodo){
-        // console.log(newTodo)
+
         this.setState(
             oldVal => {
-                return {todoList: [newTodo, ...oldVal.todoList]}
+                return {todoActive: [newTodo, ...oldVal.todoActive]}
             }
         )
-        // console.log(...this.state.todoList)
+
     }
 
     render(){
+        console.log(this.state.todoDone)
         return(
             <>
-                <TodoAdd addNewTodo={this.addNewTodo}/>
-                <ul>
-                    {
-                        this.state.todoList.map(
-                        val => {
-                            return (
-                                <TodoElement 
-                                    todo = {val.todo} 
-                                    todoStatus= {val.active}
-                                    key = {val.todo}
-                                />
+                <Container sx={{marginTop:'2rem'}}>
+                    {/* Input Form */}
+                    <TodoAdd addNewTodo={this.addNewTodo}/>
+                    <ul>
+                        {
+                            this.todoActive.map(
+                            val => {
+                                return (
+                                    <TodoElement 
+                                        todo = {val.todo} 
+                                        todoStatus= {val.active}
+                                        key = {val.todo}
+                                        onof = {this.handleCheckbox}
+                                    />
+                                )
+                            }
+                            )
+                        } 
+                        <br/>
+                        {
+                            this.todoDone.map(
+                                val=> {
+                                    return (
+                                        <TodoElement
+                                            todo = {val.todo}
+                                            key = {val.todo}
+                                            blur = {true}
+                                            onof = {this.handleCheckbox}
+                                        />
+                                    )
+                                }
                             )
                         }
-                        )
-                    } 
-                </ul>
+                    </ul>
+                </Container>
             </>
             
         )

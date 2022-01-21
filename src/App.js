@@ -23,11 +23,11 @@ const initialTodo = [
     todo: 'Read "Awaken the giant within"'
   },
   {
-    active: true,
+    active: false,
     todo: 'Check mails'
   },
   {
-    active: true,
+    active: false,
     todo: 'buy another coffee cup'
   },
 ]
@@ -35,6 +35,8 @@ const initialTodo = [
 
 
 function App() {
+
+
   // if we had login part this would look something like this
   const User = {
     logedIn : false,
@@ -49,11 +51,12 @@ function App() {
     </>
   )
   return (
-    <>
+    <div className='appBody'>
+      <style>{'background-color: rgb(40,44,52)'}</style>
         {
           User.logedIn ? <UserProvider value={User.userName}>{AppBody}</UserProvider> : AppBody
         }
-    </>
+    </div>
   );
 }
 
