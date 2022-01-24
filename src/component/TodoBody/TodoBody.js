@@ -8,28 +8,52 @@ export default class TodoBody extends React.Component{
 
     constructor(props){
         super(props);
-
+        console.log('constructor is running....')
         this.addNewTodo = this.addNewTodo.bind(this);
         this.moveTodoWhenDone = this.moveTodoWhenDone.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
-        // this.state = {
-        //     todoList : this.props.initialTodo,
-        //     todoActive: this.props.initialTodo.filter(
-        //         val => {
-        //             return val.active;
-        //         }
-        //     ),
-        //     todoDone: this.props.initialTodo.filter(
-        //         val => {
-        //             return !val.active;
-        //         }
-        //     )
-        // };
-        
         // create a single state 
-        this.state = {
-            todoList : this.props.initialTodo
-        }
+        this.state = {todoList : props.initialTodo}
+        
+    }
+
+    moveTodoWhenDone(todoValue){
+        // This function will move item from todoActive list to todoDone list
+        
+    }
+    
+    handleCheckbox(checkboxObject){
+        // this will call the moveTodoWhenDone according to it's state
+        this.setState(
+            (oldVal)=>{
+                return oldVal.todoList.map(
+                    (val)=>{
+                        if(val.todo === checkboxObject.todo){
+                            console.log('changing active state')
+                            val.active = !val.active
+                        }
+                        return val
+                    }
+                )
+            }
+        )
+        console.log(this.state.todoList.map(val=>{
+            console.log(val)
+            return val
+        }))
+        
+    }
+
+    addNewTodo(newTodo){
+
+        this.setState( (oldVal) => {
+                return {todoList: [newTodo, ...oldVal.todoList]}
+            }
+        )
+
+    }
+
+    render(){
 
         this.todoActive = this.state.todoList.filter(
             val => {
@@ -42,30 +66,7 @@ export default class TodoBody extends React.Component{
                 return !val.active;
             }
         )
-    }
-
-    moveTodoWhenDone(todoValue){
-        // This function will move item from todoActive list to todoDone list
-        
-    }
     
-    handleCheckbox(checkboxObject){
-        // this will call the moveTodoWhenDone according to it's state
-        console.log(checkboxObject)
-    }
-
-    addNewTodo(newTodo){
-
-        this.setState(
-            oldVal => {
-                return {todoActive: [newTodo, ...oldVal.todoActive]}
-            }
-        )
-
-    }
-
-    render(){
-        console.log(this.state.todoDone)
         return(
             <>
                 <Container sx={{marginTop:'2rem'}}>
@@ -78,7 +79,7 @@ export default class TodoBody extends React.Component{
                                 return (
                                     <TodoElement 
                                         todo = {val.todo} 
-                                        todoStatus= {val.active}
+                                        blur = {val.active}
                                         key = {val.todo}
                                         onof = {this.handleCheckbox}
                                     />
@@ -94,7 +95,7 @@ export default class TodoBody extends React.Component{
                                         <TodoElement
                                             todo = {val.todo}
                                             key = {val.todo}
-                                            blur = {true}
+                                            blur = {val.active}
                                             onof = {this.handleCheckbox}
                                         />
                                     )

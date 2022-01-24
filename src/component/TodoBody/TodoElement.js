@@ -3,6 +3,7 @@ import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 
 
 
+
 const TodoElement = (props)=> {
 
     const handleCrossClick = (event)=> {
@@ -29,10 +30,15 @@ const TodoElement = (props)=> {
                                         color:"red",
                                     }
                                 }}
+                            checked={!props.blur}
                         />
+                
                     </Grid>
                     <Grid item>
-                        <Typography variant="h5" sx={{color:'lightgrey'}}>
+                        <Typography 
+                            variant="h5"
+                            sx={!props.blur?{color:'lightgrey',textDecoration:'line-through'}:{color:'lightgrey',textDecoration:'none'}}
+                            >
                             {props.todo}
                         </Typography>
                     </Grid>
